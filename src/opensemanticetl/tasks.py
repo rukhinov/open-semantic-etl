@@ -7,6 +7,7 @@
 
 import os
 import time
+
 from celery import Celery
 from kombu import Queue, Exchange
 
@@ -14,9 +15,8 @@ from kombu import Queue, Exchange
 from etl import ETL
 from etl_delete import Delete
 from etl_file import Connector_File
-from etl_web import Connector_Web
 from etl_rss import Connector_RSS
-
+from etl_web import Connector_Web
 
 verbose = True
 quiet = False
@@ -156,6 +156,17 @@ def index_rss(uri):
     result = etl_rss.index(uri)
 
     return result
+
+#
+# Index MongoDB Feed
+#
+
+@app.task(name='etl.index_mongo')
+def index_mongo(verbose=None, start_date=None, end_date=None):
+
+    import opensemanticetl.etl_mongo
+
+    opensemanticetl.etl_mongo.index(start_date=start_date, end_date=end_date, verbose=verbose)
 
 
 #

@@ -13,3 +13,5 @@ feedparser
 celery
 pyinotify
 twint
+dateparser
+python-dotenv
